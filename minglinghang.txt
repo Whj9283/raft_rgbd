@@ -1,0 +1,19 @@
+jinhuanjin:
+conda activate /mnt/media/LuoJiaxuan/Anaconda3/envs/LuoJiaxuanGMFlow
+
+ceshixiaoguo:
+python evaluate.py --model=models/raft-things.pth --dataset=sintel --mixed_precision
+yong 2500MB neicun
+
+You can demo a trained model on a sequence of frames:
+python demo.py --model=models/raft-things.pth --path=demo-frames
+
+xunlian:
+#!/bin/bash
+mkdir -p checkpoints-4.15
+python -u train.py --name raft-sintel --stage sintel --validation sintel  --gpus 0 --num_steps 120000 --batch_size 5 --lr 0.0001 --image_size 368 768 --wdecay 0.00001 --gamma=0.85 --mixed_precision
+ruguoshijixuxunlian : --restore_ckpt checkpoints/raft-things.pth
+
+batch_size 5 : 10 GB / 10 : 18 GB /14 boom /13 good
+
+python -u train.py --name raft-sintel --stage sintel --validation sintel  --gpus 0 --num_steps 120000 --batch_size 1 --lr 0.0001 --image_size 368 768 --wdecay 0.00001 --gamma=0.85 --mixed_precision

@@ -1,8 +1,7 @@
 # RAFT_rgbd
-2024.4.21在原有rgb的基础上加入了第四个维度深度。
+2024.4.21在原有rgb的基础上加入了第四个维度深度。修改输入格式和网络维度，同时训练集也需要扩充。
 
-修改输入格式和网络维度，同时训练集也需要扩充。
-
+github上无法上传训练好的权重文件，在本地存放。
 # RAFT
 This repository contains the source code for our paper:
 

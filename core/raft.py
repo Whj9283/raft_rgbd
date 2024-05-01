@@ -98,6 +98,8 @@ class RAFT(nn.Module):
         image2 = image2.to(device)
         depth2_inv = depth2_inv.to(device)
         # 现在两个张量都在GPU上，可以安全地进行拼接操作
+        depth1_inv = depth1_inv.unsqueeze(1)  # 增加一个维度，使其变为4维张量
+        depth2_inv = depth2_inv.unsqueeze(1)  # 增加一个维度，使其变为4维张量
         # 将 depth0 和 depth1 加入到新增的通道中
         image1 = torch.cat((image1, depth1_inv), dim=1)  # [B, 4, H, W]
         image2 = torch.cat((image2, depth2_inv), dim=1)  # [B, 4, H, W]

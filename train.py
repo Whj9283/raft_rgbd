@@ -154,7 +154,7 @@ def train(args):
     scaler = GradScaler(enabled=args.mixed_precision)
     logger = Logger(model, scheduler)
 
-    VAL_FREQ = 5000
+    VAL_FREQ = 100
     add_noise = True
 
     should_keep_training = True
@@ -182,27 +182,28 @@ def train(args):
 
             logger.push(metrics)
 
-            if total_steps % VAL_FREQ == VAL_FREQ - 1:
-                PATH = 'checkpoints/%d_%s.pth' % (total_steps+1, args.name)
-                torch.save(model.state_dict(), PATH)
+            # if total_steps % VAL_FREQ == VAL_FREQ - 1:
+            #     PATH = 'checkpoints/%d_%s.pth' % (total_steps+1, args.name)
+            #     torch.save(model.state_dict(), PATH)
 
-                results = {}
-                for val_dataset in args.validation:
-                    if val_dataset == 'chairs':
-                        results.update(evaluate.validate_chairs(model.module))
-                    elif val_dataset == 'sintel':
-                        results.update(evaluate.validate_sintel(model.module))
-                    elif val_dataset == 'kitti':
-                        results.update(evaluate.validate_kitti(model.module))
+            #     results = {}
+            #     for val_dataset in args.validation:
+            #         if val_dataset == 'chairs':
+            #             results.update(evaluate.validate_chairs(model.module))
+            #         elif val_dataset == 'sintel':
+            #             results.update(evaluate.validate_sintel(model.module))
+            #         elif val_dataset == 'kitti':
+            #             results.update(evaluate.validate_kitti(model.module))
 
-                logger.write_dict(results)
+            #     logger.write_dict(results)
                 
-                model.train()
-                if args.stage != 'chairs':
-                    model.module.freeze_bn()
+            #     model.train()
+            #     if args.stage != 'chairs':
+            #         model.module.freeze_bn()
             
             total_steps += 1
-
+            # if total_steps % 500 == 0:
+            print(f"total_steps: {total_steps}")
             if total_steps > args.num_steps:
                 should_keep_training = False
                 break

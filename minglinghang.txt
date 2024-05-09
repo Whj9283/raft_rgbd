@@ -1,19 +1,34 @@
-jinhuanjin:
+鉴湖g1进环境:
 conda activate /mnt/media/LuoJiaxuan/Anaconda3/envs/LuoJiaxuanGMFlow
 
-ceshixiaoguo:
+测试:
 python evaluate.py --model=models/raft-things.pth --dataset=sintel --mixed_precision
+python evaluate.py --model=models/raft-sintel_120k_rgbd.pth --dataset=sintel --mixed_precision
 yong 2500MB neicun
 
-You can demo a trained model on a sequence of frames:
+用一组frames看效果:
 python demo.py --model=models/raft-things.pth --path=demo-frames
+python demo.py --model=models/raft-sintel_75k.pth --path=demo-frames
 
-xunlian:
+训练:
 #!/bin/bash
-mkdir -p checkpoints-4.15
-python -u train.py --name raft-sintel --stage sintel --validation sintel  --gpus 0 --num_steps 120000 --batch_size 5 --lr 0.0001 --image_size 368 768 --wdecay 0.00001 --gamma=0.85 --mixed_precision
-ruguoshijixuxunlian : --restore_ckpt checkpoints/raft-things.pth
+mkdir -p checkpoints
+python -u train.py --name raft-sintel --stage sintel --validation sintel  --gpus 0 --num_steps 120000 --batch_size 12 --lr 0.0001 --image_size 368 768 --wdecay 0.00001 --gamma=0.85 --mixed_precision
+继续训练加上 : --restore_ckpt checkpoints/raft-things.pth
 
-batch_size 5 : 10 GB / 10 : 18 GB /14 boom /13 good
+batch_size 5 : 10 GB  /12 good
 
-python -u train.py --name raft-sintel --stage sintel --validation sintel  --gpus 0 --num_steps 120000 --batch_size 1 --lr 0.0001 --image_size 368 768 --wdecay 0.00001 --gamma=0.85 --mixed_precision
+# 创建新终端，并命名为runner(或者其他名字)
+tmux new -s runner(or another name)
+# 列出当前所有虚拟终端
+tmux ls
+# 连接到指定虚拟终端
+tmux attach -t runner
+# 虚拟终端中退出，命令都是英语单词
+tmux detach 
+# 删除虚拟终端
+tmux kill-session -t runner
+
+cd /home/h3c/LuoJiaxuan/hahaha
+
+train 文件里 VAL_FREQ 改保存步进

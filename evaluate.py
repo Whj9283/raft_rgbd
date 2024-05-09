@@ -105,9 +105,12 @@ def validate_sintel(model, iters=32):
             image1, depth1, image2, depth2, flow_gt, _ = val_dataset[val_id]
             image1 = image1[None].cuda()
             image2 = image2[None].cuda()
+            depth1 = depth1[None].cuda()
+            depth2 = depth2[None].cuda()
 
             padder = InputPadder(image1.shape)
             image1, image2 = padder.pad(image1, image2)
+            depth1, depth2 = padder.pad(depth1, depth2)
 
             flow_low, flow_pr = model(image1, depth1, image2, depth2, iters=iters, test_mode=True)
             flow = padder.unpad(flow_pr[0]).cpu()
@@ -117,6 +120,7 @@ def validate_sintel(model, iters=32):
 
         epe_all = np.concatenate(epe_list)
         epe = np.mean(epe_all)
+        
         px1 = np.mean(epe_all<1)
         px3 = np.mean(epe_all<3)
         px5 = np.mean(epe_all<5)
